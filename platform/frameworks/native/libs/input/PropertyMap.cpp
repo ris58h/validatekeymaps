@@ -118,6 +118,8 @@ android::base::Result<std::unique_ptr<PropertyMap>> PropertyMap::load(const char
     std::unique_ptr<Tokenizer> tokenizer(rawTokenizer);
     if (status) {
         ALOGE("Error %d opening property file %s.", status, filename);
+        // Modification made by ris58h to fix https://issuetracker.google.com/issues/260059415
+        return android::base::Error(BAD_VALUE) << "Could not open " << filename;
     } else {
 #if DEBUG_PARSER_PERFORMANCE
             nsecs_t startTime = systemTime(SYSTEM_TIME_MONOTONIC);
