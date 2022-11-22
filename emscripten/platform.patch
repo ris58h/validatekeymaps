@@ -1,0 +1,39 @@
+diff --git platform/system/libbase/posix_strerror_r.cpp platform/system/libbase/posix_strerror_r.cpp
+index 5363027..7594071 100644
+--- platform/system/libbase/posix_strerror_r.cpp
++++ platform/system/libbase/posix_strerror_r.cpp
+@@ -16,7 +16,7 @@
+ 
+ /* Undefine _GNU_SOURCE so that this compilation unit can access the
+  * posix version of strerror_r */
+-#undef _GNU_SOURCE
++// #undef _GNU_SOURCE
+ #include <string.h>
+ 
+ namespace android {
+diff --git platform/system/libbase/threads.cpp platform/system/libbase/threads.cpp
+index fe408d2..58283b4 100644
+--- platform/system/libbase/threads.cpp
++++ platform/system/libbase/threads.cpp
+@@ -41,6 +41,8 @@ uint64_t GetThreadId() {
+   return syscall(__NR_gettid);
+ #elif defined(_WIN32)
+   return GetCurrentThreadId();
++#else
++  return 0;
+ #endif
+ }
+ 
+diff --git platform/system/logging/liblog/logger_write.cpp platform/system/logging/liblog/logger_write.cpp
+index 296e02f..eb39372 100644
+--- platform/system/logging/liblog/logger_write.cpp
++++ platform/system/logging/liblog/logger_write.cpp
+@@ -277,6 +277,8 @@ static uint64_t GetThreadId() {
+   return syscall(__NR_gettid);
+ #elif defined(_WIN32)
+   return GetCurrentThreadId();
++#else
++  return 0;
+ #endif
+ }
+ 
