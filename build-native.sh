@@ -1,4 +1,4 @@
-clang++ -o validatekeymaps -std=c++17 platform/**/*.cc platform/**/*.cpp \
+clang++ -O2 -o validatekeymaps -std=c++17 platform/**/*.cc platform/**/*.cpp \
   -isystem platform/external/fmtlib/include \
   -isystem platform/frameworks/native/include \
   -isystem platform/frameworks/native/libs/gui/include \

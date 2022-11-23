@@ -1,6 +1,6 @@
 patch -i emscripten/platform.patch
 
-emcc -o validatekeymaps.html -std=c++17 platform/**/*.cc platform/**/*.cpp \
+emcc -O2 -o validatekeymaps.js -std=c++17 platform/**/*.cc platform/**/*.cpp \
   -isystem platform/external/fmtlib/include \
   -isystem platform/frameworks/native/include \
   -isystem platform/frameworks/native/libs/gui/include \
@@ -12,6 +12,9 @@ emcc -o validatekeymaps.html -std=c++17 platform/**/*.cc platform/**/*.cpp \
   -isystem platform/system/core/libutils/include \
   -isystem platform/system/libbase/include \
   -isystem platform/system/logging/liblog/include \
-  -isystem emscripten/include
+  -isystem emscripten/include \
+  -sENVIRONMENT=web \
+  -sINVOKE_RUN=0 \
+  -sEXPORTED_RUNTIME_METHODS=callMain,FS
 
 patch -i emscripten/platform.patch -R

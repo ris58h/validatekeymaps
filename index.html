@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <div style="display: flex; flex-direction: column; margin: auto; width: 400px;">
+      <select id="filetype">
+        <option value="kl" selected>*.kl</option>
+        <option value="kcm">*.kcm</option>
+        <option value="idc">*.idc</option>
+      </select>
+      <textarea id="content"></textarea>
+      <button onclick="validate();">Validate</button>
+      <textarea id="output" disabled autocomplete="off"></textarea>
+    </div>
+
+    <script type='text/javascript'>
+      const contentElement = document.querySelector("#content");
+      const filetypeElement = document.querySelector("#filetype");
+      const output = document.querySelector("#output");
+
+      var Module = {
+        print: function (text) {
+          output.value += text + '\n';
+        },
+        printErr: function(text) {
+          output.value += text + '\n';
+        }
+      };
+
+      window.onerror = function(event) {
+        console.error(event);
+      };
+
+      function validate() {
+        output.value = "";
+        const content = contentElement.value;
+        const filetype = filetypeElement.value;
+        const filename = "input." + filetype;
+        Module.FS.writeFile(filename, content);
+        Module.callMain([filename]);
+      }
+    </script>
+    <script async type="text/javascript" src="validatekeymaps.js"></script>
+  </body>
+</html>
