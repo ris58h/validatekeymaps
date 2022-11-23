@@ -22,17 +22,15 @@
       const output = document.querySelector("#output");
 
       var Module = {
-        print: function (text) {
-          output.value += text + '\n';
-        },
-        printErr: function(text) {
-          output.value += text + '\n';
-        }
+        print: toOutput,
+        printErr: toOutput,
+        onAbort: console.error
+      };
+      function toOutput(text) {
+        output.value += text + '\n';
       };
 
-      window.onerror = function(event) {
-        console.error(event);
-      };
+      window.onerror = console.error;
 
       function validate() {
         output.value = "";
