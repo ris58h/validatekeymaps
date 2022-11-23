@@ -18,19 +18,26 @@
         overflow-wrap: normal;
         overflow-x: scroll;
       }
+
+      #output.success {
+        background-color: lightgreen;
+      }
+      #output.failure {
+        background-color: pink;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <span>
-        <label for="filetype">Filetype:</label>
+        <label for="filetype">Select file extension:</label>
         <select id="filetype">
           <option value="kl" selected>*.kl</option>
           <option value="kcm">*.kcm</option>
           <option value="idc">*.idc</option>
         </select>
       </span>
-      <textarea id="content" rows="10"></textarea>
+      <textarea id="content" rows="10" placeholder="Enter file content here"></textarea>
       <button onclick="validate();">Validate</button>
       <label for="output">Output:</label>
       <textarea id="output" rows="10" disabled autocomplete="off"></textarea>
@@ -54,11 +61,19 @@
 
       function validate() {
         output.value = "";
+        output.classList.remove('success');
+        output.classList.remove('failure');
+
         const content = contentElement.value;
         const filetype = filetypeElement.value;
         const filename = "input." + filetype;
         Module.FS.writeFile(filename, content);
-        Module.callMain([filename]);
+        const result = Module.callMain([filename]);
+        if (result) {
+          output.classList.add('failure');
+        } else {
+          output.classList.add('success');
+        }
       }
     </script>
     <script async type="text/javascript" src="validatekeymaps.js"></script>
