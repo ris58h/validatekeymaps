@@ -62,6 +62,13 @@ status_t Tokenizer::open(const String8& filename, Tokenizer** outTokenizer) {
         } else {
             size_t length = size_t(stat.st_size);
 
+            // Modification made by ris58h to fix https://issuetracker.google.com/issues/260113063
+            // Return an empty tokenizer if the file is empty.
+            if (length == 0) {
+                *outTokenizer = new Tokenizer(filename, nullptr, 0, false, length);
+                return result;
+            }
+
             FileMap* fileMap = new FileMap();
             bool ownBuffer = false;
             char* buffer;
