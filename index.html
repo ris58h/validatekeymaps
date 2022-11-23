@@ -3,17 +3,37 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+      }
+
+      textarea {
+        width: 100%;
+
+        white-space: pre;
+        overflow-wrap: normal;
+        overflow-x: scroll;
+      }
+    </style>
   </head>
   <body>
-    <div style="display: flex; flex-direction: column; margin: auto; width: 400px;">
-      <select id="filetype">
-        <option value="kl" selected>*.kl</option>
-        <option value="kcm">*.kcm</option>
-        <option value="idc">*.idc</option>
-      </select>
-      <textarea id="content"></textarea>
+    <div class="container">
+      <span>
+        <label for="filetype">Filetype:</label>
+        <select id="filetype">
+          <option value="kl" selected>*.kl</option>
+          <option value="kcm">*.kcm</option>
+          <option value="idc">*.idc</option>
+        </select>
+      </span>
+      <textarea id="content" rows="10"></textarea>
       <button onclick="validate();">Validate</button>
-      <textarea id="output" disabled autocomplete="off"></textarea>
+      <label for="output">Output:</label>
+      <textarea id="output" rows="10" disabled autocomplete="off"></textarea>
     </div>
 
     <script type='text/javascript'>
