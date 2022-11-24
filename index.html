@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+      }
+
+      textarea {
+        width: 100%;
+
+        white-space: pre;
+        overflow-wrap: normal;
+        overflow-x: scroll;
+      }
+
+      #output.success {
+        background-color: lightgreen;
+      }
+      #output.failure {
+        background-color: pink;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <span>
+        <label for="filetype">Select file extension:</label>
+        <select id="filetype">
+          <option value="kl" selected>*.kl</option>
+          <option value="kcm">*.kcm</option>
+          <option value="idc">*.idc</option>
+          <option value="virtualkeys">virtualkeys.*</option>
+        </select>
+      </span>
+      <textarea id="content" rows="10" placeholder="Enter file content here"></textarea>
+      <button onclick="validate();">Validate</button>
+      <label for="output">Output:</label>
+      <textarea id="output" rows="10" disabled autocomplete="off"></textarea>
+    </div>
+
+    <script type='text/javascript'>
+      const contentElement = document.querySelector("#content");
+      const filetypeElement = document.querySelector("#filetype");
+      const output = document.querySelector("#output");
+
+      var Module = {
+        print: toOutput,
+        printErr: toOutput,
+        onAbort: console.error
+      };
+      function toOutput(text) {
+        output.value += text + '\n';
+      };
+
+      window.onerror = console.error;
+
+      function validate() {
+        output.value = "";
+        output.classList.remove('success');
+        output.classList.remove('failure');
+
+        const content = contentElement.value;
+        const filetype = filetypeElement.value;
+        const filename = filetype === "virtualkeys"
+          ? "virtualkeys.input"
+          : "input." + filetype;
+        Module.FS.writeFile(filename, content);
+        const result = Module.callMain([filename]);
+        if (result) {
+          output.classList.add('failure');
+        } else {
+          output.classList.add('success');
+        }
+      }
+    </script>
+    <script async type="text/javascript" src="validatekeymaps.js"></script>
+  </body>
+</html>
