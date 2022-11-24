@@ -35,6 +35,7 @@
           <option value="kl" selected>*.kl</option>
           <option value="kcm">*.kcm</option>
           <option value="idc">*.idc</option>
+          <option value="virtualkeys">virtualkeys.*</option>
         </select>
       </span>
       <textarea id="content" rows="10" placeholder="Enter file content here"></textarea>
@@ -66,7 +67,9 @@
 
         const content = contentElement.value;
         const filetype = filetypeElement.value;
-        const filename = "input." + filetype;
+        const filename = filetype === "virtualkeys"
+          ? "virtualkeys.input"
+          : "input." + filetype;
         Module.FS.writeFile(filename, content);
         const result = Module.callMain([filename]);
         if (result) {
