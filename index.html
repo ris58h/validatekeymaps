@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
+    <meta name="description" content="Android's Keymap Validation Tool">
+    <title>Validate keymaps tool</title>
     <style>
       .container {
         display: flex;
@@ -28,6 +29,13 @@
     </style>
   </head>
   <body>
+    <h1>Validate keymaps tool</h1>
+
+    <p>From Android <a target="_blank" href="https://source.android.com/docs/core/interaction/input/validate-keymaps">docs</a>:</p>
+    <blockquote cite="https://source.android.com/docs/core/interaction/input/validate-keymaps">
+      The Android framework has a small tool called <code>validatekeymaps</code> to validate the syntax of input device configuration files, key layout files, key character maps files and virtual key definition files.
+    </blockquote>
+
     <div class="container">
       <span>
         <label for="filetype">Select file extension:</label>
@@ -80,5 +88,13 @@
       }
     </script>
     <script async type="text/javascript" src="validatekeymaps.js"></script>
+
+    <hr>
+
+    <p>
+        Source code: <a target="_blank" href="https://github.com/ris58h/validatekeymaps">GitHub</a>
+        <br/>
+        Contacts: <a href="mailto:ris58h@gmail.com">Email</a>
+    </p>
   </body>
 </html>
