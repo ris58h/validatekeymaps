@@ -47,7 +47,7 @@
       </select>
       <textarea id="file-content" aria-label="File content" rows="10" placeholder="Enter file content here"></textarea>
       <hr style="border: none;">
-      <button onclick="validate();">Validate</button>
+      <button id="validate">Validate</button>
       <hr style="border: none;">
       <label for="output">Output:</label>
       <textarea id="output" rows="10" disabled autocomplete="off"></textarea>
@@ -56,43 +56,57 @@
     <script type='text/javascript'>
       const fileContentElement = document.querySelector("#file-content");
       const fileTypeElement = document.querySelector("#file-type");
-      const output = document.querySelector("#output");
+      const validateButton = document.querySelector("#validate");
+      const outputElement = document.querySelector("#output");
 
       var Module = {
-        print: toOutput,
-        printErr: toOutput,
+        print: addToOutput,
+        printErr: addToOutput,
         onAbort: console.error
-      };
-      function toOutput(text) {
-        output.value += text + '\n';
       };
 
       window.onerror = console.error;
 
+      fileTypeElement.addEventListener('change', updateValidateButtonState)
+      updateValidateButtonState();
+      validateButton.addEventListener('click', validate)
+
+      function updateValidateButtonState() {
+        const fileType = fileTypeElement.value;
+        validateButton.disabled = fileType ? false : true;
+      }
+
       function validate() {
-        output.value = "";
-        output.classList.remove('success');
-        output.classList.remove('failure');
+        resetOutput();
 
         const fileContent = fileContentElement.value;
         const fileType = fileTypeElement.value;
-
-        if (!fileType) {
-          toOutput("Please select file type in the form above.");
-          output.classList.add('failure');
-          return;
-        }
-
         const fileName = fileType === "virtualkeys"
           ? "virtualkeys.input"
           : "input." + fileType;
+
         Module.FS.writeFile(fileName, fileContent);
         const result = Module.callMain([fileName]);
+
+        setOutputResult(result);
+      }
+
+      function addToOutput(text) {
+        outputElement.value += text + '\n';
+      };
+
+      function setOutputResult(result) {
         if (result) {
-          output.classList.add('failure');
+          outputElement.classList.add('failure');
         } else {
-          output.classList.add('success');
+          outputElement.classList.add('success');
         }
+      };
+
+      function resetOutput() {
+        outputElement.value = "";
+        outputElement.classList.remove('success');
+        outputElement.classList.remove('failure');
       }
     </script>
     <script async type="text/javascript" src="validatekeymaps.js"></script>
