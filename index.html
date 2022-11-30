@@ -37,54 +37,76 @@
     </p>
 
     <div class="container">
-      <span>
-        <label for="filetype">Select file extension:</label>
-        <select id="filetype">
-          <option value="kl" selected>*.kl</option>
-          <option value="kcm">*.kcm</option>
-          <option value="idc">*.idc</option>
-          <option value="virtualkeys">virtualkeys.*</option>
-        </select>
-      </span>
-      <textarea id="content" rows="10" placeholder="Enter file content here"></textarea>
-      <button onclick="validate();">Validate</button>
+      <label>Input file:</label>
+      <select id="file-type" aria-label="File type">
+        <option value="" selected>Select file type</option>
+        <option value="kl">*.kl</option>
+        <option value="kcm">*.kcm</option>
+        <option value="idc">*.idc</option>
+        <option value="virtualkeys">virtualkeys.*</option>
+      </select>
+      <textarea id="file-content" aria-label="File content" rows="10" placeholder="Enter file content here"></textarea>
+      <hr style="border: none;">
+      <button id="validate">Validate</button>
+      <hr style="border: none;">
       <label for="output">Output:</label>
       <textarea id="output" rows="10" disabled autocomplete="off"></textarea>
     </div>
 
     <script type='text/javascript'>
-      const contentElement = document.querySelector("#content");
-      const filetypeElement = document.querySelector("#filetype");
-      const output = document.querySelector("#output");
+      const fileContentElement = document.querySelector("#file-content");
+      const fileTypeElement = document.querySelector("#file-type");
+      const validateButton = document.querySelector("#validate");
+      const outputElement = document.querySelector("#output");
 
       var Module = {
-        print: toOutput,
-        printErr: toOutput,
+        print: addToOutput,
+        printErr: addToOutput,
         onAbort: console.error
-      };
-      function toOutput(text) {
-        output.value += text + '\n';
       };
 
       window.onerror = console.error;
 
-      function validate() {
-        output.value = "";
-        output.classList.remove('success');
-        output.classList.remove('failure');
+      fileTypeElement.addEventListener('change', updateValidateButtonState)
+      updateValidateButtonState();
+      validateButton.addEventListener('click', validate)
 
-        const content = contentElement.value;
-        const filetype = filetypeElement.value;
-        const filename = filetype === "virtualkeys"
+      function updateValidateButtonState() {
+        const fileType = fileTypeElement.value;
+        validateButton.disabled = fileType ? false : true;
+      }
+
+      function validate() {
+        resetOutput();
+
+        const fileContent = fileContentElement.value;
+        const fileType = fileTypeElement.value;
+        const fileName = fileType === "virtualkeys"
           ? "virtualkeys.input"
-          : "input." + filetype;
-        Module.FS.writeFile(filename, content);
-        const result = Module.callMain([filename]);
+          : "input." + fileType;
+
+        Module.FS.writeFile(fileName, fileContent);
+        const result = Module.callMain([fileName]);
+
+        setOutputResult(result);
+      }
+
+      function addToOutput(text) {
+        outputElement.value += text + '\n';
+      };
+
+      function setOutputResult(result) {
         if (result) {
-          output.classList.add('failure');
+          outputElement.classList.add('failure');
         } else {
-          output.classList.add('success');
+          outputElement.classList.add('success');
         }
+      };
+
+      function resetOutput() {
+        outputElement.value = "";
+        outputElement.classList.remove('success');
+        outputElement.classList.remove('failure');
       }
     </script>
     <script async type="text/javascript" src="validatekeymaps.js"></script>
