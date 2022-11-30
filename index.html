@@ -37,24 +37,25 @@
     </p>
 
     <div class="container">
-      <span>
-        <label for="filetype">Select file extension:</label>
-        <select id="filetype">
-          <option value="kl" selected>*.kl</option>
-          <option value="kcm">*.kcm</option>
-          <option value="idc">*.idc</option>
-          <option value="virtualkeys">virtualkeys.*</option>
-        </select>
-      </span>
-      <textarea id="content" rows="10" placeholder="Enter file content here"></textarea>
+      <label>Input file:</label>
+      <select id="file-type" aria-label="File type">
+        <option value="" selected>Select file type</option>
+        <option value="kl">*.kl</option>
+        <option value="kcm">*.kcm</option>
+        <option value="idc">*.idc</option>
+        <option value="virtualkeys">virtualkeys.*</option>
+      </select>
+      <textarea id="file-content" aria-label="File content" rows="10" placeholder="Enter file content here"></textarea>
+      <hr style="border: none;">
       <button onclick="validate();">Validate</button>
+      <hr style="border: none;">
       <label for="output">Output:</label>
       <textarea id="output" rows="10" disabled autocomplete="off"></textarea>
     </div>
 
     <script type='text/javascript'>
-      const contentElement = document.querySelector("#content");
-      const filetypeElement = document.querySelector("#filetype");
+      const fileContentElement = document.querySelector("#file-content");
+      const fileTypeElement = document.querySelector("#file-type");
       const output = document.querySelector("#output");
 
       var Module = {
@@ -73,13 +74,20 @@
         output.classList.remove('success');
         output.classList.remove('failure');
 
-        const content = contentElement.value;
-        const filetype = filetypeElement.value;
-        const filename = filetype === "virtualkeys"
+        const fileContent = fileContentElement.value;
+        const fileType = fileTypeElement.value;
+
+        if (!fileType) {
+          toOutput("Please select file type in the form above.");
+          output.classList.add('failure');
+          return;
+        }
+
+        const fileName = fileType === "virtualkeys"
           ? "virtualkeys.input"
-          : "input." + filetype;
-        Module.FS.writeFile(filename, content);
-        const result = Module.callMain([filename]);
+          : "input." + fileType;
+        Module.FS.writeFile(fileName, fileContent);
+        const result = Module.callMain([fileName]);
         if (result) {
           output.classList.add('failure');
         } else {
