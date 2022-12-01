@@ -11,6 +11,18 @@
         box-sizing: border-box;
       }
 
+      button,select,textarea {
+        margin-top: 8px;
+      }
+
+      textarea {
+        width: 100%;
+
+        white-space: pre;
+        overflow-wrap: normal;
+        overflow-x: scroll;
+      }
+
       .container {
         max-width: 960px;
         margin: auto;
@@ -20,12 +32,8 @@
         align-items: start;
       }
 
-      textarea {
-        width: 100%;
-
-        white-space: pre;
-        overflow-wrap: normal;
-        overflow-x: scroll;
+      #validate {
+        margin: 16px 0;
       }
 
       #output.success {
@@ -53,9 +61,7 @@
         <option value="virtualkeys">virtualkeys.*</option>
       </select>
       <textarea id="file-content" aria-label="File content" rows="10" placeholder="Enter file content here"></textarea>
-      <hr style="border: none;">
       <button id="validate">Validate</button>
-      <hr style="border: none;">
       <label for="output">Output:</label>
       <textarea id="output" rows="10" disabled autocomplete="off"></textarea>
 
