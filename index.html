@@ -8,6 +8,9 @@
     <title>Validate keymaps tool</title>
     <style>
       .container {
+        max-width: 960px;
+        margin: auto;
+
         display: flex;
         flex-direction: column;
         align-items: start;
@@ -30,13 +33,13 @@
     </style>
   </head>
   <body>
-    <h1>Validate keymaps tool</h1>
-
-    <p>
-      Android's <a target="_blank" href="https://source.android.com/docs/core/interaction/input/validate-keymaps">validatekeymaps</a> tool built for Web.
-    </p>
-
     <div class="container">
+      <h1>Validate keymaps tool</h1>
+
+      <p>
+        Android's <a target="_blank" href="https://source.android.com/docs/core/interaction/input/validate-keymaps">validatekeymaps</a> tool built for Web.
+      </p>
+  
       <label>Input file:</label>
       <select id="file-type" aria-label="File type">
         <option value="" selected>Select file type</option>
@@ -51,6 +54,13 @@
       <hr style="border: none;">
       <label for="output">Output:</label>
       <textarea id="output" rows="10" disabled autocomplete="off"></textarea>
+
+      <hr style="width: 100%;">
+      <p>
+          Source code: <a target="_blank" href="https://github.com/ris58h/validatekeymaps">GitHub</a>
+          <br/>
+          Contacts: <a href="mailto:ris58h@gmail.com">Email</a>
+      </p>
     </div>
 
     <script type='text/javascript'>
@@ -110,13 +120,5 @@
       }
     </script>
     <script async type="text/javascript" src="validatekeymaps.js"></script>
-
-    <hr>
-
-    <p>
-        Source code: <a target="_blank" href="https://github.com/ris58h/validatekeymaps">GitHub</a>
-        <br/>
-        Contacts: <a href="mailto:ris58h@gmail.com">Email</a>
-    </p>
   </body>
 </html>
