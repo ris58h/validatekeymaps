@@ -79,59 +79,59 @@
     </div>
 
     <script type='text/javascript'>
-      const fileContentElement = document.querySelector("#file-content");
-      const fileTypeElement = document.querySelector("#file-type");
-      const validateButton = document.querySelector("#validate");
-      const outputElement = document.querySelector("#output");
+      const fileContentElement = document.querySelector("#file-content")
+      const fileTypeElement = document.querySelector("#file-type")
+      const validateButton = document.querySelector("#validate")
+      const outputElement = document.querySelector("#output")
 
       var Module = {
         print: addToOutput,
         printErr: addToOutput,
         onAbort: console.error
-      };
+      }
 
-      window.onerror = console.error;
+      window.onerror = console.error
 
       fileTypeElement.addEventListener('change', updateValidateButtonState)
-      updateValidateButtonState();
+      updateValidateButtonState()
       validateButton.addEventListener('click', validate)
 
       function updateValidateButtonState() {
-        const fileType = fileTypeElement.value;
-        validateButton.disabled = fileType ? false : true;
+        const fileType = fileTypeElement.value
+        validateButton.disabled = fileType ? false : true
       }
 
       function validate() {
-        resetOutput();
+        resetOutput()
 
-        const fileContent = fileContentElement.value;
-        const fileType = fileTypeElement.value;
+        const fileContent = fileContentElement.value
+        const fileType = fileTypeElement.value
         const fileName = fileType === "virtualkeys"
           ? "virtualkeys.input"
-          : "input." + fileType;
+          : "input." + fileType
 
-        Module.FS.writeFile(fileName, fileContent);
-        const result = Module.callMain([fileName]);
+        Module.FS.writeFile(fileName, fileContent)
+        const result = Module.callMain([fileName])
 
-        setOutputResult(result);
+        setOutputResult(result)
       }
 
       function addToOutput(text) {
-        outputElement.value += text + '\n';
-      };
+        outputElement.value += text + '\n'
+      }
 
       function setOutputResult(result) {
         if (result) {
-          outputElement.classList.add('failure');
+          outputElement.classList.add('failure')
         } else {
-          outputElement.classList.add('success');
+          outputElement.classList.add('success')
         }
-      };
+      }
 
       function resetOutput() {
-        outputElement.value = "";
-        outputElement.classList.remove('success');
-        outputElement.classList.remove('failure');
+        outputElement.value = ""
+        outputElement.classList.remove('success')
+        outputElement.classList.remove('failure')
       }
     </script>
     <script async type="text/javascript" src="validatekeymaps.js"></script>
